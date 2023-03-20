@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proyecto_Matrix.Clases
+namespace Proyecto_Matrix.Funciones
 {
-    internal class Menu
+    public class Menu
     {
     }
 }

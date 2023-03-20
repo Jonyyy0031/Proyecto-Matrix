@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Matrix.Funciones
 {
-    internal class inventario
+    public class inventario
     {
         //te adjunto unos voids q servirian gay
         //aqui seria con lo que el poderoso estructura de datos no ha enseñado de ordenamientos
