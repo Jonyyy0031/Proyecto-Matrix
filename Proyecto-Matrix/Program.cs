@@ -16,12 +16,12 @@ namespace Proyecto_Matrix
         {
             Producto producto = new Producto();
             bool salir = false;
-            while (salir != true) 
+            while (salir != true)
             {
-            AnsiConsole.Write(
-                    new FigletText("MATRIX")
-                        .LeftJustified()
-                        .Color(Color.Red));
+                AnsiConsole.Write(
+                        new FigletText("STOCK UP")
+                            .LeftJustified()
+                            .Color(Color.Gold3_1));
 
                 Console.WriteLine("");
                 var Funcion = AnsiConsole.Prompt(
@@ -38,7 +38,7 @@ namespace Proyecto_Matrix
                     case "Registro de productos":
                         producto.Id += 0;
                         producto.nombre = AnsiConsole.Ask<string>("Nombre del producto");
-                        producto.precio = AnsiConsole.Ask<string>("del producto");
+                        producto.precio = AnsiConsole.Ask<decimal>("del producto");
                         producto.cantidad_inventario = AnsiConsole.Ask<int>(" del producto");
                         producto.descripcion = AnsiConsole.Ask<string>(" del producto");
                         AnsiConsole.MarkupLine("Producto agregado con exito");
@@ -53,7 +53,7 @@ namespace Proyecto_Matrix
                             .Start(ctx =>
                             {
                                 table.AddColumn("ID");
-                                table.AddRow("Nombre Producto", producto.precio);
+                                //table.AddRow("Nombre Producto", producto.precio);
                                 ctx.Refresh();
                                 Thread.Sleep(1000);
 

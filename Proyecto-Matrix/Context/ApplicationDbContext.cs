@@ -18,5 +18,7 @@ namespace Proyecto_Matrix.Context
         }
        public DbSet<Producto> productos { get; set; }
         public DbSet<Persona> personas { get; set; }
+        //add-migration nombre
+        //update-database
     }
 }
