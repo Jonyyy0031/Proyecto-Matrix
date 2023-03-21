@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Data.Common;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using Microsoft.Data.SqlClient;
+using Proyecto_Matrix.Clases;
 using Proyecto_Matrix.Context;
+using Proyecto_Matrix.Funciones;
 using Spectre.Console;
 
 namespace Proyecto_Matrix
@@ -10,12 +14,15 @@ namespace Proyecto_Matrix
     {
         static void Main(string[] args)
         {
+            Producto producto = new Producto();
+            bool salir = false;
+            while (salir != true) 
+            {
             AnsiConsole.Write(
                     new FigletText("MATRIX")
                         .LeftJustified()
                         .Color(Color.Red));
-            while (true)
-            {
+
                 Console.WriteLine("");
                 var Funcion = AnsiConsole.Prompt(
              new SelectionPrompt<string>()
@@ -24,33 +31,47 @@ namespace Proyecto_Matrix
             .MoreChoicesText("Mueve con las flechas de arriba y abajo para seleccionar")
             .AddChoices(new[] {
             "Registro de productos", "Visualizacion de inventario", "Actualizacion de inventario",
-            "salir"
+            "Salir"
             }));
-                    if(Funcion == "Registro de productos")
+                switch (Funcion)
                 {
-                    var Nombre = AnsiConsole.Ask<string>("Nombre del producto");
-                    var precio = AnsiConsole.Ask<string>("del producto");
-                    var cantidad = AnsiConsole.Ask<string>(" del producto");
-                    var color = AnsiConsole.Ask<string>(" del producto");
-                    AnsiConsole.MarkupLine("Producto agregado con exito");
-                    AnsiConsole.MarkupLine("Presione una tecla para continuar");
-                    Console.ReadKey();
-                    Console.Clear();
+                    case "Registro de productos":
+                        producto.Id += 0;
+                        producto.nombre = AnsiConsole.Ask<string>("Nombre del producto");
+                        producto.precio = AnsiConsole.Ask<string>("del producto");
+                        producto.cantidad_inventario = AnsiConsole.Ask<int>(" del producto");
+                        producto.descripcion = AnsiConsole.Ask<string>(" del producto");
+                        AnsiConsole.MarkupLine("Producto agregado con exito");
+                        AnsiConsole.MarkupLine("Presione una tecla para continuar");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    case "Visualizacion de inventario":
+                        var table = new Table().LeftAligned();
 
-                }
+                        AnsiConsole.Live(table)
+                            .Start(ctx =>
+                            {
+                                table.AddColumn("ID");
+                                table.AddRow("Nombre Producto", producto.precio);
+                                ctx.Refresh();
+                                Thread.Sleep(1000);
 
-                if (Funcion == "Visualizacion de Inventario")
-                {
-                    Console.WriteLine(Funcion);
-                }
-                if (Funcion == "Actualizacion de Inventario")
-                {
-                    Console.WriteLine(Funcion);
-                }
-                if (Funcion == "salir")
-                {
-                    break;
-                }
+                                table.AddColumn("Nombre Producto");
+                                ctx.Refresh();
+                                Thread.Sleep(1000);
+                            });
+                        break;
+                    case "Actualizacion de inventario":
+
+                        break;
+                    case "Salir":
+                        Console.Clear();
+                        AnsiConsole.MarkupLine("¡Hasta Luego!");
+                        salir = true;
+                        
+                        break;
+                }                
             }
         }
     }
