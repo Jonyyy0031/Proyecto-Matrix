@@ -17,16 +17,34 @@ namespace Proyecto_Matrix.Funciones
         {
             using (var _context = new ApplicationDbContext())
             {
+                bool salir = false;
+                while (salir !=true)
+                {
                 //TODO ADENTRO SE AGREGA
                 Producto producto = new Producto();
                 producto.nombre = AnsiConsole.Ask<string>("Ingresa el Nombre del Producto");
                 producto.descripcion = AnsiConsole.Ask<string>("Ingresa la descripcion breve del producto");
                 producto.precio = AnsiConsole.Ask<decimal>("Ingresa El precio del producto");
                 producto.cantidad_inventario = AnsiConsole.Ask<int>("¿Cuantos hay en el inventario?");
-                _context.productos.Add(producto);
+                 _context.productos.Add(producto);
                 _context.SaveChanges();
-                AnsiConsole.MarkupLine("Producto agregado con exito");
-                var Seleccion = AnsiConsole.Prompt<string>();
+
+                    AnsiConsole.MarkupLine("Producto agregado con exito");
+                var Seleccion = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                    .Title("¿Desea agregar otro producto?")
+                    .PageSize(10)
+                    .AddChoices(new[]
+                    {
+                       "Si","No"
+                    }));
+                    switch(Seleccion)
+                    {
+                        case "No":
+                            salir = true;
+                        break;
+                    }
+                }
             }
         }
         public void VisualizarProductos()

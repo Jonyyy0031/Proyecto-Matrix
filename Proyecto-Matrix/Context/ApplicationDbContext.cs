@@ -16,7 +16,7 @@ namespace Proyecto_Matrix.Context
             optionsBuilder.UseSqlServer(@"Server=DESKTOP-SD33E52;Database=ProyectoDB-Matrix;Trusted_Connection=True;");
 
         }
-       public DbSet<Producto> productos { get; set; }
+        public DbSet<Producto> productos { get; set; }
         public DbSet<Persona> personas { get; set; }
         //add-migration nombre
         //update-database

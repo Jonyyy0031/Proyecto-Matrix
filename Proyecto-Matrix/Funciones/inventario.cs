@@ -13,7 +13,8 @@ namespace Proyecto_Matrix.Funciones
         {
             CRUDCurso FuncionCRUD = new CRUDCurso();
             FuncionCRUD.CrearProducto();
-            AnsiConsole.MarkupLine("Pr"
+            
         }
+
     }
 }

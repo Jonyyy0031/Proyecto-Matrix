@@ -92,7 +92,7 @@ namespace Proyecto_Matrix
                         Console.Clear();
                         break;
                     case "Actualizacion de inventario":
-                        c
+
                         break;
                     case "Ventas":
 
