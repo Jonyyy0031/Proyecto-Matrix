@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -20,17 +23,19 @@ namespace Proyecto_Matrix
             bool salir = false;
             while (salir != true)
             {
-                AnsiConsole.Write(
-                        new FigletText("STOCK UP")
-                            .LeftJustified()
-                            .Color(Color.Gold3_1));
-
-                Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(@"
+███████╗████████╗ ██████╗  ██████╗██╗  ██╗    ██╗   ██╗██████╗ 
+██╔════╝╚══██╔══╝██╔═══██╗██╔════╝██║ ██╔╝    ██║   ██║██╔══██╗
+███████╗   ██║   ██║   ██║██║     █████╔╝     ██║   ██║██████╔╝
+╚════██║   ██║   ██║   ██║██║     ██╔═██╗     ██║   ██║██╔═══╝ 
+███████║   ██║   ╚██████╔╝╚██████╗██║  ██╗    ╚██████╔╝██║     
+╚══════╝   ╚═╝    ╚═════╝  ╚═════╝╚═╝  ╚═╝     ╚═════╝ ╚═╝");
+                Console.WriteLine("\n");
                 var Funcion = AnsiConsole.Prompt(
              new SelectionPrompt<string>()
             .Title("¿Que desea Realizar?")
             .PageSize(10)
-            .MoreChoicesText("Mueve con las flechas de arriba y abajo para seleccionar")
             .AddChoices(new[] {
             "Registro de productos", "Visualizacion de inventario", "Actualizacion de inventario",
              "Ventas","Salir"
@@ -38,11 +43,8 @@ namespace Proyecto_Matrix
                 switch (Funcion)
                 {
                     case "Registro de productos":
-                        producto.Id += 0;
-                        producto.nombre = AnsiConsole.Ask<string>("Nombre del producto");
-                        producto.precio = AnsiConsole.Ask<decimal>("del producto");
-                        producto.cantidad_inventario = AnsiConsole.Ask<int>(" del producto");
-                        producto.descripcion = AnsiConsole.Ask<string>(" del producto");
+                        CRUDCurso CRUD = new CRUDCurso();
+                        CRUD.CrearProducto();
                         AnsiConsole.MarkupLine("Producto agregado con exito");
                         AnsiConsole.MarkupLine("Presione una tecla para continuar");
                         Console.ReadKey();
@@ -67,7 +69,7 @@ namespace Proyecto_Matrix
                         table.BorderColor<Table>(color: Color.Green);
                         AnsiConsole.Live(table)
                             .Start(ctx =>
-                            { 
+                            {
                                 ctx.Refresh();
                                 Thread.Sleep(800);
                                 table.AddColumn("ID");
@@ -75,15 +77,22 @@ namespace Proyecto_Matrix
                                 table.AddColumn("Descripcion del producto");
                                 table.AddColumn("Precio del producto");
                                 table.AddColumn("Cantidad disponible");
-                                table.AddRow(""+producto.Id,""+producto.nombre,""+producto.descripcion,""+producto.precio,""+producto.cantidad_inventario);
+                                using (var _context = new ApplicationDbContext())
+                                {
+                                    List<Producto> productos = _context.productos.ToList();
+                                    foreach (Producto item in productos)
+                                    {
+                                        table.AddRow("" + item.Id, "" + item.nombre, "" + item.descripcion, "" + item.precio, "" + item.cantidad_inventario);
+                                    }
 
+                                }
                             });
                         AnsiConsole.MarkupLine("Presiona una tecla para continuar");
                         Console.ReadKey();
                         Console.Clear();
                         break;
                     case "Actualizacion de inventario":
-
+                        c
                         break;
                     case "Ventas":
 

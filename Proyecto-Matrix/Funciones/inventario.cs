@@ -9,6 +9,11 @@ namespace Proyecto_Matrix.Funciones
 {
     public class inventario
     {
-     
+     public void agregarproducto()
+        {
+            CRUDCurso FuncionCRUD = new CRUDCurso();
+            FuncionCRUD.CrearProducto();
+            AnsiConsole.MarkupLine("Pr"
+        }
     }
 }

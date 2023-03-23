@@ -4,6 +4,7 @@ using Proyecto_Matrix.Context;
 using Spectre.Console;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,10 +22,11 @@ namespace Proyecto_Matrix.Funciones
                 producto.nombre = AnsiConsole.Ask<string>("Ingresa el Nombre del Producto");
                 producto.descripcion = AnsiConsole.Ask<string>("Ingresa la descripcion breve del producto");
                 producto.precio = AnsiConsole.Ask<decimal>("Ingresa El precio del producto");
-                producto.cantidad_inventario = AnsiConsole.Ask<int>("¿Cuantos hay en el inventario");
-
+                producto.cantidad_inventario = AnsiConsole.Ask<int>("¿Cuantos hay en el inventario?");
                 _context.productos.Add(producto);
                 _context.SaveChanges();
+                AnsiConsole.MarkupLine("Producto agregado con exito");
+                var Seleccion = AnsiConsole.Prompt<string>();
             }
         }
         public void VisualizarProductos()
