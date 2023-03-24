@@ -24,7 +24,7 @@ namespace Proyecto_Matrix.Funciones
     public void ModificarInventario()
         {
             CRUDCurso FuncionCRUD = new CRUDCurso();
-
+            FuncionCRUD.ModificacionProductos();
         }
     }
 }

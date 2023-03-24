@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Matrix.Clases
 {
-    public class Persona
+    public class Administrador
     {
         [Key]
-        public int Idpersona { get; set; }
+        public int IDAdministrador { get; set; }
         public string Nombre { get; set; }
         public string Correo { get; set; }
 

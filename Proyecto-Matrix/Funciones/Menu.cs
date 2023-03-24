@@ -11,22 +11,29 @@ namespace Proyecto_Matrix.Funciones
 {
     public class Menu
     {
+        public void ImprimirLogo()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(@"
+███████╗████████╗ ██████╗  ██████╗██╗  ██╗    ██╗   ██╗██████╗ 
+██╔════╝╚══██╔══╝██╔═══██╗██╔════╝██║ ██╔╝    ██║   ██║██╔══██╗
+███████╗   ██║   ██║   ██║██║     █████╔╝     ██║   ██║██████╔╝
+╚════██║   ██║   ██║   ██║██║     ██╔═██╗     ██║   ██║██╔═══╝ 
+███████║   ██║   ╚██████╔╝╚██████╗██║  ██╗    ╚██████╔╝██║     
+╚══════╝   ╚═╝    ╚═════╝  ╚═════╝╚═╝  ╚═╝     ╚═════╝ ╚═╝");
+            Console.WriteLine("\n");
+        }
         public void imprimirmenu()
         {
             bool salir = false;
             while (salir != true)
             {
-                AnsiConsole.Write(
-                        new FigletText("STOCK UP")
-                            .LeftJustified()
-                            .Color(Color.Gold3_1));
-
-                Console.WriteLine("");
+                inventario FuncionInventario = new inventario();
+                ImprimirLogo();
                 var Funcion = AnsiConsole.Prompt(
              new SelectionPrompt<string>()
             .Title("¿Que desea Realizar?")
             .PageSize(10)
-            .MoreChoicesText("Mueve con las flechas de arriba y abajo para seleccionar")
             .AddChoices(new[] {
             "Registro de productos", "Visualizacion de inventario", "Actualizacion de inventario",
              "Ventas","Salir"
@@ -34,15 +41,25 @@ namespace Proyecto_Matrix.Funciones
                 switch (Funcion)
                 {
                     case "Registro de productos":
-                        
+                        FuncionInventario.agregarproducto();
+                        AnsiConsole.MarkupLine("Presione una tecla para continuar");
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case "Visualizacion de inventario":
-                       
+                        FuncionInventario.visualizaciondeinventario();
                         break;
                     case "Actualizacion de inventario":
+                        FuncionInventario.ModificarInventario();
+                        break;
+                    case "Ventas":
+                        AnsiConsole.MarkupLine("Función en desarrollo");
+                        AnsiConsole.MarkupLine("Presione una tecla para continuar");
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case "Salir":
-
+                        Console.Clear();
                         AnsiConsole.MarkupLine("¡Hasta Luego!");
                         salir = true;
                         break;

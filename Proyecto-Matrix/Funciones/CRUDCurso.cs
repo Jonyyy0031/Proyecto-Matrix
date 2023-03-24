@@ -23,16 +23,17 @@ namespace Proyecto_Matrix.Funciones
                 bool salir = false;
                 while (salir != true)
                 {
+                    Menu menu = new Menu();
                     //TODO ADENTRO SE AGREGA
                     Producto producto = new Producto();
                     producto.nombre = AnsiConsole.Ask<string>("Ingresa el Nombre del Producto");
                     producto.descripcion = AnsiConsole.Ask<string>("Ingresa la descripcion breve del producto");
-                    producto.precio = AnsiConsole.Ask<decimal>("Ingresa El precio del producto");
+                    producto.precio = AnsiConsole.Ask<decimal>("Ingresa el precio del producto");
                     producto.cantidad_inventario = AnsiConsole.Ask<int>("¿Cuantos hay en el inventario?");
                     _context.productos.Add(producto);
                     _context.SaveChanges();
-
-                    AnsiConsole.MarkupLine("Producto agregado con exito");
+                    Console.Clear();
+                    menu.ImprimirLogo();
                     var Seleccion = AnsiConsole.Prompt(
                         new SelectionPrompt<string>()
                         .Title("¿Desea agregar otro producto?")
@@ -44,6 +45,7 @@ namespace Proyecto_Matrix.Funciones
                     switch (Seleccion)
                     {
                         case "No":
+                            AnsiConsole.MarkupLine("Producto agregado con exito");
                             salir = true;
                             break;
                     }
@@ -87,7 +89,7 @@ namespace Proyecto_Matrix.Funciones
                                 var productos = _context.productos.ToList();
                                 foreach (Producto item in productos)
                                 {
-                                    table.AddRow("" + item.Id, "" + item.nombre, "" + item.descripcion, "" + item.precio, "" + item.cantidad_inventario);
+                                    table.AddRow("" + item.ID, "" + item.nombre, "" + item.descripcion, "" + item.precio, "" + item.cantidad_inventario);
                                 }
                             }
                         });
@@ -108,29 +110,202 @@ namespace Proyecto_Matrix.Funciones
         {
             using (ApplicationDbContext _context = new ApplicationDbContext())
             {
-                if(_context.productos.Any())
+                Menu menu = new Menu();
+                if (_context.productos.Any())
                 {
-                    var Cambio = AnsiConsole.Prompt(
-                        new SelectionPrompt<String>()
-                        .Title("¿Que desea Realizar?")
-                        .PageSize(10)
-                        .AddChoices(new[]
-                        {
-                            "Cambiar Nombre del producto","Cambiar Descripcion del producto","Cambiar Precio del Producto","Cambiar Cantidad Disponible del producto",
-                            "Eliminar el producto"
-                        }));
-                    switch (Cambio)
+                    int IDCambio = AnsiConsole.Ask<int>("Ingrese la ID del producto a modificar");
+                    Console.Clear();
+                    menu.ImprimirLogo();
+                    Producto producto = _context.productos.Find(IDCambio);
+                    if (producto != null)
                     {
-                        case "Cambiar Nombre del producto":
-                            break;
-                        case "Cambiar Descripcion del producto":
-                            break;
-                        case "Cambiar Precio del Producto":
-                            break;
-                        case "Cambiar Cantidad Disponible del producto":
-                            break;
-                        case "Eliminar el producto":
-                            break;
+                        var Cambio = AnsiConsole.Prompt(
+                            new SelectionPrompt<String>()
+                            .Title("¿Que desea Realizar?")
+                            .PageSize(10)
+                            .AddChoices(new[]
+                            {
+                            "Cambiar Nombre del producto","Cambiar Descripcion del producto","Cambiar Precio del Producto","Cambiar Cantidad Disponible del producto",
+                            "Cambiar toda la informacion del producto","Eliminar el producto"
+                            }));
+                        switch (Cambio)
+                        {
+                            case "Cambiar Nombre del producto":
+                                bool finalizado = false;
+                                while (finalizado != true)
+                                {
+                                    producto.nombre = AnsiConsole.Ask<string>("Ingrese el nuevo nombre del producto");
+                                    AnsiConsole.MarkupLine("Nombre del producto actualizado correctamente a " +producto.nombre+"\n");
+                                    var seleccion = AnsiConsole.Prompt(
+                                        new SelectionPrompt<String>()
+                                        .Title("Desea mantener el nuevo nombre?")
+                                        .PageSize(10)
+                                        .AddChoices(new[]
+                                        {
+                                            "Si","No"
+                                        }));
+                                   switch (seleccion)
+                                    {
+                                        case "Si":
+                                            finalizado = true;
+                                            _context.productos.Update(producto);
+                                            _context.SaveChanges();
+                                            break;
+                                        case "No":
+                                            Console.Clear();
+                                            menu.ImprimirLogo();
+                                            break;
+                                    }
+                                }
+                                AnsiConsole.MarkupLine("Presione una tecla para continuar");
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            case "Cambiar Descripcion del producto":
+                                bool finalizado1 = false;
+                                while (finalizado1 != true)
+                                {
+                                    producto.descripcion = AnsiConsole.Ask<string>("Ingrese el nuevo nombre del producto");
+                                    AnsiConsole.MarkupLine("Nombre del producto actualizado correctamente a " + producto.descripcion + "\n");
+                                    var seleccion = AnsiConsole.Prompt(
+                                        new SelectionPrompt<String>()
+                                        .Title("Desea mantener la nueva descripción?")
+                                        .PageSize(10)
+                                        .AddChoices(new[]
+                                        {
+                                            "Si","No"
+                                        }));
+                                    switch (seleccion)
+                                    {
+                                        case "Si":
+                                            finalizado1 = true;
+                                            _context.productos.Update(producto);
+                                            _context.SaveChanges();
+                                            break;
+                                        case "No":
+                                            Console.Clear();
+                                            menu.ImprimirLogo();
+                                            break;
+                                    }
+                                }
+                                AnsiConsole.MarkupLine("Presione una tecla para continuar");
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            case "Cambiar Precio del Producto":
+                                bool finalizado3 = false;
+                                while (finalizado3 != true)
+                                {
+                                    producto.precio = AnsiConsole.Ask<int>("Ingrese el nuevo nombre del producto");
+                                    AnsiConsole.MarkupLine("precio del producto actualizado correctamente a " + producto.precio + "\n");
+                                    var seleccion = AnsiConsole.Prompt(
+                                        new SelectionPrompt<String>()
+                                        .Title("Desea mantener el precio que selecciono?")
+                                        .PageSize(10)
+                                        .AddChoices(new[]
+                                        {
+                                            "Si","No"
+                                        }));
+                                    switch (seleccion)
+                                    {
+                                        case "Si":
+                                            finalizado3 = true;
+                                            _context.productos.Update(producto);
+                                            _context.SaveChanges();
+                                            break;
+                                        case "No":
+                                            Console.Clear();
+                                            menu.ImprimirLogo();
+                                            break;
+                                    }
+                                }
+                                AnsiConsole.MarkupLine("Presione una tecla para continuar");
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            case "Cambiar Cantidad Disponible del producto":
+                                bool finalizado4 = false;
+                                while (finalizado4 != true)
+                                {
+                                    producto.nombre = AnsiConsole.Ask<string>("Ingrese la nueva cantidad disponible");
+                                    AnsiConsole.MarkupLine("Nombre del producto actualizado correctamente a " + producto.cantidad_inventario + "\n");
+                                    var seleccion = AnsiConsole.Prompt(
+                                        new SelectionPrompt<String>()
+                                        .Title("Es correcta la nueva cantidad?")
+                                        .PageSize(10)
+                                        .AddChoices(new[]
+                                        {
+                                            "Si","No"
+                                        }));
+                                    switch (seleccion)
+                                    {
+                                        case "Si":
+                                            finalizado4 = true;
+                                            _context.productos.Update(producto);
+                                            _context.SaveChanges();
+                                            break;
+                                        case "No":
+                                            Console.Clear();
+                                            menu.ImprimirLogo();
+                                            break;
+                                    }
+                                }
+                                AnsiConsole.MarkupLine("Presione una tecla para continuar");
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            case "Cambiar toda la informacion del producto":
+                                bool finalizado5 = false;
+                                while (finalizado5 != true)
+                                {
+                                    producto.nombre = AnsiConsole.Ask<string>("Ingrese el nuevo nombre del producto");
+                                    producto.descripcion = AnsiConsole.Ask<string>("Ingrese la nueva descripcion");
+                                    producto.precio = AnsiConsole.Ask<int>("Ingrese el nuevo precio");
+                                    producto.cantidad_inventario = AnsiConsole.Ask<int>("Ingrese la nueva cantidad disponible");
+                                    AnsiConsole.MarkupLine("producto actualizado correctamente a:\nNombre: " + producto.nombre +"\n Descripcion: "+producto.descripcion+
+                                        "\nPrecio: "+producto.precio+"\nCantidad: "+producto.cantidad_inventario+ "\n");
+                                    var seleccion = AnsiConsole.Prompt(
+                                        new SelectionPrompt<String>()
+                                        .Title("Desea mantener los cambios?")
+                                        .PageSize(10)
+                                        .AddChoices(new[]
+                                        {
+                                            "Si","No"
+                                        }));
+                                    switch (seleccion)
+                                    {
+                                        case "Si":
+                                            finalizado5 = true;
+                                            _context.productos.Update(producto);
+                                            _context.SaveChanges();
+                                            break;
+                                        case "No":
+                                            Console.Clear();
+                                            menu.ImprimirLogo();
+                                            break;
+                                    }
+                                }
+                                AnsiConsole.MarkupLine("Presione una tecla para continuar");
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            case "Eliminar el producto":
+                                _context.productos.Remove(producto);
+                                _context.SaveChanges();
+                               _context.productos.Update(producto);
+                                AnsiConsole.MarkupLine("Producto eliminado correctamente");
+                                AnsiConsole.MarkupLine("Presione una tecla para continuar");
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        AnsiConsole.MarkupLine("No se encontro ningun producto con ID "+IDCambio);
+                        AnsiConsole.MarkupLine("Presione una tecla para continuar");
+                        Console.ReadKey();
+                        Console.Clear();
                     }
                 }
                 else
