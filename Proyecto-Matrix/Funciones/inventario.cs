@@ -15,6 +15,16 @@ namespace Proyecto_Matrix.Funciones
             FuncionCRUD.CrearProducto();
             
         }
+    public void visualizaciondeinventario()
+        {
+            CRUDCurso FuncionCRUD = new CRUDCurso();
+            FuncionCRUD.VisualizarProductos();
+        }
 
+    public void ModificarInventario()
+        {
+            CRUDCurso FuncionCRUD = new CRUDCurso();
+
+        }
     }
 }

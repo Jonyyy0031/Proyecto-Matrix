@@ -19,7 +19,7 @@ namespace Proyecto_Matrix
     {
         static void Main(string[] args)
         {
-            Producto producto = new Producto();
+            inventario FuncionInventario = new inventario();
             bool salir = false;
             while (salir != true)
             {
@@ -43,53 +43,13 @@ namespace Proyecto_Matrix
                 switch (Funcion)
                 {
                     case "Registro de productos":
-                        CRUDCurso CRUD = new CRUDCurso();
-                        CRUD.CrearProducto();
-                        AnsiConsole.MarkupLine("Producto agregado con exito");
+                        FuncionInventario.agregarproducto();
                         AnsiConsole.MarkupLine("Presione una tecla para continuar");
                         Console.ReadKey();
                         Console.Clear();
                         break;
                     case "Visualizacion de inventario":
-                        AnsiConsole.Status()
-                            .Start("Espere por favor...", ctx =>
-                            {
-                                AnsiConsole.MarkupLine("Cargando Tabla...");
-                                Thread.Sleep(2000);
-                                ctx.Status("Espere por favor...");
-                                ctx.Spinner(Spinner.Known.Star);
-                                ctx.SpinnerStyle(Style.Parse("green"));
-                                AnsiConsole.MarkupLine("Organizando Productos...");
-                                Thread.Sleep(4000);
-                                AnsiConsole.MarkupLine("Finalizando...");
-                                Thread.Sleep(3000);
-                            });
-                        var table = new Table().LeftAligned();
-                        table.Border = TableBorder.Rounded;
-                        table.BorderColor<Table>(color: Color.Green);
-                        AnsiConsole.Live(table)
-                            .Start(ctx =>
-                            {
-                                ctx.Refresh();
-                                Thread.Sleep(800);
-                                table.AddColumn("ID");
-                                table.AddColumn("Nombre del producto ");
-                                table.AddColumn("Descripcion del producto");
-                                table.AddColumn("Precio del producto");
-                                table.AddColumn("Cantidad disponible");
-                                using (var _context = new ApplicationDbContext())
-                                {
-                                    List<Producto> productos = _context.productos.ToList();
-                                    foreach (Producto item in productos)
-                                    {
-                                        table.AddRow("" + item.Id, "" + item.nombre, "" + item.descripcion, "" + item.precio, "" + item.cantidad_inventario);
-                                    }
-
-                                }
-                            });
-                        AnsiConsole.MarkupLine("Presiona una tecla para continuar");
-                        Console.ReadKey();
-                        Console.Clear();
+                        FuncionInventario.visualizaciondeinventario();
                         break;
                     case "Actualizacion de inventario":
 
