@@ -9,7 +9,7 @@ using Proyecto_Matrix.Context;
 namespace Proyecto_Matrix.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230324180357_Matrix")]
+    [Migration("20230324233546_Matrix")]
     partial class Matrix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

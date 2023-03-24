@@ -11,19 +11,19 @@ namespace Proyecto_Matrix.Funciones
     {
      public void agregarproducto()
         {
-            CRUDCurso FuncionCRUD = new CRUDCurso();
+            CRUDProducto FuncionCRUD = new CRUDProducto();
             FuncionCRUD.CrearProducto();
             
         }
     public void visualizaciondeinventario()
         {
-            CRUDCurso FuncionCRUD = new CRUDCurso();
+            CRUDProducto FuncionCRUD = new CRUDProducto();
             FuncionCRUD.VisualizarProductos();
         }
 
     public void ModificarInventario()
         {
-            CRUDCurso FuncionCRUD = new CRUDCurso();
+            CRUDProducto FuncionCRUD = new CRUDProducto();
             FuncionCRUD.ModificacionProductos();
         }
     }

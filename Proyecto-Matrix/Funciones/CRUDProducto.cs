@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Matrix.Funciones
 {
-    public class CRUDCurso
+    public class CRUDProducto
     {
         public void CrearProducto()
         {
