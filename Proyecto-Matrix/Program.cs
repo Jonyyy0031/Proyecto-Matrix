@@ -19,8 +19,8 @@ namespace Proyecto_Matrix
     {
         static void Main(string[] args)
         {
-            Menu menu = new Menu();
-            menu.imprimirmenu();
+            Login login = new Login();
+            login.Welcome();
         }
     }
 }
