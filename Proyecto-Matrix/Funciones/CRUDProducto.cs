@@ -71,14 +71,19 @@ namespace Proyecto_Matrix.Funciones
                                 AnsiConsole.MarkupLine("Finalizando...");
                                 Thread.Sleep(2000);
                             });
+                    Console.Clear();
+                    Menu menu = new Menu();
+                    menu.ImprimirLogo();
                     var table = new Table().LeftAligned();
-                    table.Border = TableBorder.Minimal;
-                    table.BorderColor<Table>(color: Color.Green);
+                    table.Border = TableBorder.Rounded;
+                    table.BorderColor<Table>(color: Color.Grey70);
                     AnsiConsole.Live(table)
                         .Start(ctx =>
                         {
+                            
                             ctx.Refresh();
                             Thread.Sleep(500);
+                            table.Title("Inventario");
                             table.AddColumn("ID");
                             table.AddColumn("Nombre del producto ");
                             table.AddColumn("Descripcion del producto");

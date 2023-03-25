@@ -13,7 +13,8 @@ namespace Proyecto_Matrix.Funciones
     {
         public void ImprimirLogo()
         {
-            Console.ForegroundColor = ConsoleColor.Green;
+            
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.Write(@"
 ███████╗████████╗ ██████╗  ██████╗██╗  ██╗    ██╗   ██╗██████╗ 
 ██╔════╝╚══██╔══╝██╔═══██╗██╔════╝██║ ██╔╝    ██║   ██║██╔══██╗
@@ -28,6 +29,7 @@ namespace Proyecto_Matrix.Funciones
             bool salir = false;
             while (salir != true)
             {
+                Estatus estatus = new Estatus();
                 inventario FuncionInventario = new inventario();
                 ImprimirLogo();
                 var Funcion = AnsiConsole.Prompt(
@@ -41,15 +43,18 @@ namespace Proyecto_Matrix.Funciones
                 switch (Funcion)
                 {
                     case "Registro de productos":
+                        estatus.Loading();
                         FuncionInventario.agregarproducto();
                         AnsiConsole.MarkupLine("Presione una tecla para continuar");
                         Console.ReadKey();
                         Console.Clear();
                         break;
                     case "Visualizacion de inventario":
+                        estatus.Loading();
                         FuncionInventario.visualizaciondeinventario();
                         break;
                     case "Actualizacion de inventario":
+                        estatus.Loading();
                         FuncionInventario.ModificarInventario();
                         break;
                     case "Ventas":
@@ -60,6 +65,7 @@ namespace Proyecto_Matrix.Funciones
                         break;
                     case "Salir":
                         Console.Clear();
+                        ImprimirLogo();
                         AnsiConsole.MarkupLine("¡Hasta Luego!");
                         salir = true;
                         break;
