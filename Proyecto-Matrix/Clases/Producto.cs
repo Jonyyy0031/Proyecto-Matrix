@@ -15,10 +15,5 @@ namespace Proyecto_Matrix.Clases
         public string descripcion { get; set; }
         public int cantidad_inventario { get; set; }
         public decimal precio { get; set; }
-
-        
-
-
-
     }
 }
