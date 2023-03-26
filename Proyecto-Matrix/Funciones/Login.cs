@@ -1,9 +1,12 @@
-﻿using Proyecto_Matrix.Clases;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using Proyecto_Matrix.Clases;
 using Proyecto_Matrix.Context;
 using Spectre.Console;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,77 +14,99 @@ namespace Proyecto_Matrix.Funciones
 {
     public class Login
     {
-        public void Welcome()
+        public void Bienvenida()
         {
-            Console.WriteLine(@"
-########  #### ######## ##    ## ##     ## ######## ##    ## #### ########   #######  
-##     ##  ##  ##       ###   ## ##     ## ##       ###   ##  ##  ##     ## ##     ## 
-##     ##  ##  ##       ####  ## ##     ## ##       ####  ##  ##  ##     ## ##     ## 
-########   ##  ######   ## ## ## ##     ## ######   ## ## ##  ##  ##     ## ##     ## 
-##     ##  ##  ##       ##  ####  ##   ##  ##       ##  ####  ##  ##     ## ##     ## 
-##     ##  ##  ##       ##   ###   ## ##   ##       ##   ###  ##  ##     ## ##     ## 
-########  #### ######## ##    ##    ###    ######## ##    ## #### ########   #######  
-            ");
-        }
-
-        public void Sesion()
-        {
+            Menus menu = new Menus();
+            menu.ImprimirLogoBienvenida();
             using (ApplicationDbContext _context = new ApplicationDbContext())
             {
-                int answ = 0;
-                do
+                var Funcion = AnsiConsole.Prompt(
+             new SelectionPrompt<string>()
+            .Title("Seleccione como desea ingresar")
+            .PageSize(10)
+            .AddChoices(new[] {
+            "Ingresar como Administrador","Ingresar como Empleado"
+            }));
+            switch (Funcion)
                 {
-                    Console.Clear();
-                    Welcome();
-                    Console.WriteLine("Escribe tu ID");
-                    int ID = int.Parse(Console.ReadLine());
-                    Console.WriteLine("Escribe tu username");
-                    string user = Console.ReadLine();
-                    Console.WriteLine("Escribe tu contrasena");
-                    string pass = Console.ReadLine();
-
-                    Administrador administrador = _context.Administradores.Find(ID);
-                    if (administrador == null)
-                    {
+                    case "Ingresar como Administrador":
                         Console.Clear();
-                        Console.WriteLine("No estas registrado en la Base de Datos.Por favor contacta al administrador.");
-                    }
-                    else
-                    {
-                        string user1 = persona.Username;
-                        string pass1 = persona.Password;
-                        int tipouser1 = persona.TipoUsuario;
-                        if (user == user1 && pass == pass1)
+                        menu.ImprimirLogoBienvenida();
+                        int IDAdministrador = AnsiConsole.Ask<int>("Ingresa tu ID de Administrador");
+                        Administrador administrador = _context.Administradores.Find(IDAdministrador);
+                        if (administrador != null)
                         {
-                            Menu menu = new Menu();
-                            Console.Clear();
-                            Console.WriteLine("Digita el numero que corresponde a tu tipo de usuario:\n1. Administrador\n2. Empleado");
-                            int tipouser = int.Parse(Console.ReadLine());
-                            if (tipouser == tipouser1 && tipouser == 1)
+                            int intentos1 = 0;
+                            while (intentos1 < 6)
                             {
-                                menu.imprimirmenuAdmin();
-                            }
-                            else if (tipouser == tipouser1 && tipouser == 2)
-                            {
-                                menu.imprimirmenuCajero();
-                            }
-                            else
-                            {
-                                Console.Clear();
-                                Console.WriteLine("No tienes los permisos necesarios para usar el sistema");
+                                string UsuarioA = AnsiConsole.Ask<string>("Ingresa tu Usuario");
+                                string ContraseñaAdmin = AnsiConsole.Ask<string>("Ingresa tu Contraseña");
+                                if (administrador.User == UsuarioA && administrador.Password == ContraseñaAdmin)
+                                {
+                                    Console.Clear();
+                                    menu.ImprimirLogo();
+                                    Console.WriteLine("Bienvenido " + UsuarioA);
+                                    menu.imprimirmenuAdministrador();
+                                }
+                                else
+                                {
+                                    intentos1 ++;
+                                    Console.WriteLine("Datos incorrectos, Ingrese de nuevo los datos. Tiene como maximo 5 intentos");
+                                    Console.WriteLine("Presione una tecla para continuar");
+                                    Console.ReadKey();
+                                    Console.Clear();
+                                }
                             }
                         }
-                    }
-                    Console.WriteLine("\nDeseas intentarlo nuevamente?");
-                    Console.WriteLine("\n1. Si\n2.No");
-                    answ = int.Parse(Console.ReadLine());
-                    if (answ != 1 || answ != 2)
-                    {
-                        Console.WriteLine("Por favor ingresa una opcion correcta:");
-                        Console.WriteLine("1.Si\n2.No");
-                        answ = int.Parse(Console.ReadLine());
-                    }
-                } while (answ == 1);
+                        else
+                        {
+                            AnsiConsole.MarkupLine("No existe esa ID de Administrador");
+                        }
+                        break;
+                    case "Ingresar como Empleado":
+
+                        Console.Clear();
+                        menu.ImprimirLogoBienvenida();
+                        int IDEmpleado = AnsiConsole.Ask<int>("Ingresa tu ID de Empleado");
+                        Empleado empleado = _context.Empleados.Find(IDEmpleado);
+                        if (empleado != null)
+                        {
+                            int intentos = 0;
+                            while (intentos <6)
+                            {
+                                menu.ImprimirLogo();
+                                string Usuario = AnsiConsole.Ask<string>("Ingresa tu Usuario");
+                                string ContraseñaEmpleado = AnsiConsole.Ask<string>("Ingresa tu contraseña");
+                                if (empleado.UserE == Usuario && empleado.PasswordE == ContraseñaEmpleado)
+                                {
+                                    Console.Clear();
+                                    menu.ImprimirLogo();
+                                    Console.WriteLine("Bienvenido " + Usuario);
+                                    menu.imprimirmenuEmpleado();
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Datos incorrectos, Ingrese de nuevo los datos. Tiene como maximo 5 intentos");
+                                    Console.WriteLine("Presione una tecla para continuar");
+                                    Console.ReadKey();
+                                    Console.Clear();
+                                    intentos++;
+                                }
+                            }
+                            Console.WriteLine("Excedio el limite de intentos");
+                            Console.WriteLine("Presione una tecla para continuar");
+                            Console.ReadKey();
+                            Console.Clear();
+
+                        }
+                        else
+                        {
+                            AnsiConsole.MarkupLine("No existe esa ID de empleado");
+                            Console.WriteLine("Presione una tecla para continuar");
+                            Console.ReadKey();
+                        }
+                        break;
+                }
             }
         }
     }

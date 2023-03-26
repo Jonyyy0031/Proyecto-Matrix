@@ -20,7 +20,7 @@ namespace Proyecto_Matrix
         static void Main(string[] args)
         {
             Login login = new Login();
-            login.Welcome();
+            login.Bienvenida();
         }
     }
 }

@@ -1,42 +1,43 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Proyecto_Matrix.Clases;
 using Proyecto_Matrix.Context;
 using Spectre.Console;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.IO.Pipes;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Proyecto_Matrix.Funciones
 {
-    public class CRUDProducto
+    public class CRUDEmpleado
     {
-        public void CrearProducto()
+        public void AñadirEmpleado()
         {
-            using (var _context = new ApplicationDbContext())
+            using (ApplicationDbContext _context = new ApplicationDbContext())
             {
                 bool salir = false;
-                while (salir != true)
+                while (salir !=true)
                 {
                     Menus menu = new Menus();
-                    //TODO ADENTRO SE AGREGA
-                    Producto producto = new Producto();
-                    producto.nombre = AnsiConsole.Ask<string>("Ingresa el Nombre del Producto");
-                    producto.descripcion = AnsiConsole.Ask<string>("Ingresa la descripcion breve del producto");
-                    producto.precio = AnsiConsole.Ask<decimal>("Ingresa el precio del producto");
-                    producto.cantidad_inventario = AnsiConsole.Ask<int>("¿Cuantos hay en el inventario?");
-                    _context.productos.Add(producto);
+                    Empleado empleado = new Empleado();
+                    Console.WriteLine("Ingresa la informacion:");
+                    empleado.UserE = AnsiConsole.Ask<string>("Ingresa el nombre de Usuario del Empleado");
+                    empleado.PasswordE = AnsiConsole.Ask<string>("Ingresa la contraseña del Empleado");
+                    empleado.NombreE = AnsiConsole.Ask<string>("Ingresa el nombre del Empleado");
+                    empleado.Apellido = AnsiConsole.Ask<string>("Ingresa el apellido del Empleado");
+                    empleado.Puesto = AnsiConsole.Ask<string>("Ingresa el puesto laboral del Empleado");
+                    Console.WriteLine("Ingresa el apellido");
+                    _context.Empleados.Add(empleado);
                     _context.SaveChanges();
                     Console.Clear();
                     menu.ImprimirLogo();
                     var Seleccion = AnsiConsole.Prompt(
                         new SelectionPrompt<string>()
-                        .Title("¿Desea agregar otro producto?")
+                        .Title("¿Desea agregar otro Empleado?")
                         .PageSize(10)
                         .AddChoices(new[]
                         {
@@ -45,18 +46,21 @@ namespace Proyecto_Matrix.Funciones
                     switch (Seleccion)
                     {
                         case "No":
-                            AnsiConsole.MarkupLine("Producto agregado con exito");
+                            AnsiConsole.MarkupLine("Empleado agregado con exito");
+                            AnsiConsole.MarkupLine("Presione una tecla para continuar");
+                            Console.ReadKey();
+                            Console.Clear();
                             salir = true;
                             break;
                     }
                 }
             }
         }
-        public void VisualizarProductos()
+        public void VisualizarEmpleados()
         {
             using (var _context = new ApplicationDbContext())
             {
-                if (_context.productos.Any())
+                if (_context.Empleados.Any())
                 {
                     AnsiConsole.Status()
                             .Start("Espere por favor...", ctx =>
@@ -66,7 +70,7 @@ namespace Proyecto_Matrix.Funciones
                                 ctx.Status("Espere por favor...");
                                 ctx.Spinner(Spinner.Known.Aesthetic);
                                 ctx.SpinnerStyle(Style.Parse("green"));
-                                AnsiConsole.MarkupLine("Organizando Productos...");
+                                AnsiConsole.MarkupLine("Organizando Empleados...");
                                 Thread.Sleep(1500);
                                 AnsiConsole.MarkupLine("Finalizando...");
                                 Thread.Sleep(2000);
@@ -80,21 +84,22 @@ namespace Proyecto_Matrix.Funciones
                     AnsiConsole.Live(table)
                         .Start(ctx =>
                         {
-                            
+
                             ctx.Refresh();
                             Thread.Sleep(500);
-                            table.Title("Inventario");
+                            table.Title("Empleados");
                             table.AddColumn("ID");
-                            table.AddColumn("Nombre del producto ");
-                            table.AddColumn("Descripcion del producto");
-                            table.AddColumn("Precio del producto");
-                            table.AddColumn("Cantidad disponible");
+                            table.AddColumn("Usuario del Empleado");
+                            table.AddColumn("Contraseña del Empleado");
+                            table.AddColumn("Nombre del Empleado");
+                            table.AddColumn("Apellido del Empleado");
+                            table.AddColumn("Puesto del Empleado");
                             using (var _context = new ApplicationDbContext())
                             {
-                                var productos = _context.productos.ToList();
-                                foreach (Producto item in productos)
+                                var Empleados = _context.Empleados.ToList();
+                                foreach (Empleado User  in Empleados)
                                 {
-                                    table.AddRow("" + item.ID, "" + item.nombre, "" + item.descripcion, "" + item.precio, "" + item.cantidad_inventario);
+                                    table.AddRow("" + User.IDEmpleado, "" + User.UserE, "" + User.PasswordE, "" + User.NombreE, "" + User.Apellido,""+User.Puesto);
                                 }
                             }
                         });
@@ -104,56 +109,56 @@ namespace Proyecto_Matrix.Funciones
                 }
                 else
                 {
-                    AnsiConsole.MarkupLine("No hay productos en el inventario");
+                    AnsiConsole.MarkupLine("No hay empleados en el sistema");
                     AnsiConsole.MarkupLine("Presione una tecla para continuar");
                     Console.ReadKey();
                     Console.Clear();
                 }
             }
         }
-        public void ModificacionProductos()
+        public void ModificarEmpleados()
         {
             using (ApplicationDbContext _context = new ApplicationDbContext())
             {
                 Menus menu = new Menus();
-                if (_context.productos.Any())
+                if (_context.Empleados.Any())
                 {
-                    int IDCambio = AnsiConsole.Ask<int>("Ingrese la ID del producto a modificar");
+                    int IDCambio = AnsiConsole.Ask<int>("Ingrese la ID del Empleado a modificar");
                     Console.Clear();
                     menu.ImprimirLogo();
-                    Producto producto = _context.productos.Find(IDCambio);
-                    if (producto != null)
+                    Empleado Empleado = _context.Empleados.Find(IDCambio);
+                    if (Empleado != null)
                     {
                         var Cambio = AnsiConsole.Prompt(
                             new SelectionPrompt<String>()
-                            .Title("¿Que desea Realizar?")
+                            .Title("¿Que desea hacer con el Empleado?")
                             .PageSize(10)
                             .AddChoices(new[]
                             {
-                            "Cambiar Nombre del producto","Cambiar Descripcion del producto","Cambiar Precio del Producto","Cambiar Cantidad Disponible del producto",
-                            "Cambiar toda la informacion del producto","Eliminar el producto"
+                            "Cambiar Usuario del Empleado","Cambiar Contraseña del Empleado","Cambiar Nombre del Empleado","Cambiar Apellido del Empleado","Cambiar Puesto del Empleado",
+                            "Cambiar toda la informacion del Empleado","Eliminar Empleado"
                             }));
                         switch (Cambio)
                         {
-                            case "Cambiar Nombre del producto":
+                            case "Cambiar Usuario del Empleado":
                                 bool finalizado = false;
                                 while (finalizado != true)
                                 {
-                                    producto.nombre = AnsiConsole.Ask<string>("Ingrese el nuevo nombre del producto");
-                                    AnsiConsole.MarkupLine("Nombre del producto actualizado correctamente a " +producto.nombre+"\n");
+                                    Empleado.UserE = AnsiConsole.Ask<string>("Ingrese el Usuario del Empleado");
+                                    AnsiConsole.MarkupLine("Usuario actualizado correctamente a " + Empleado.UserE + "\n");
                                     var seleccion = AnsiConsole.Prompt(
                                         new SelectionPrompt<String>()
-                                        .Title("Desea mantener el nuevo nombre?")
+                                        .Title("Desea mantener el nuevo Usuario?")
                                         .PageSize(10)
                                         .AddChoices(new[]
                                         {
                                             "Si","No"
                                         }));
-                                   switch (seleccion)
+                                    switch (seleccion)
                                     {
                                         case "Si":
                                             finalizado = true;
-                                            _context.productos.Update(producto);
+                                            _context.Empleados.Update(Empleado);
                                             _context.SaveChanges();
                                             break;
                                         case "No":
@@ -166,15 +171,15 @@ namespace Proyecto_Matrix.Funciones
                                 Console.ReadKey();
                                 Console.Clear();
                                 break;
-                            case "Cambiar Descripcion del producto":
+                            case "Cambiar Contraseña del Empleado":
                                 bool finalizado1 = false;
                                 while (finalizado1 != true)
                                 {
-                                    producto.descripcion = AnsiConsole.Ask<string>("Ingrese el nuevo nombre del producto");
-                                    AnsiConsole.MarkupLine("Nombre del producto actualizado correctamente a " + producto.descripcion + "\n");
+                                    Empleado.PasswordE = AnsiConsole.Ask<string>("Ingrese la nueva contraseña del Empleado");
+                                    AnsiConsole.MarkupLine("Contraseña actualizada correctamente a " + Empleado.PasswordE + "\n");
                                     var seleccion = AnsiConsole.Prompt(
                                         new SelectionPrompt<String>()
-                                        .Title("Desea mantener la nueva descripción?")
+                                        .Title("Desea mantener la nueva contraseña?")
                                         .PageSize(10)
                                         .AddChoices(new[]
                                         {
@@ -184,7 +189,7 @@ namespace Proyecto_Matrix.Funciones
                                     {
                                         case "Si":
                                             finalizado1 = true;
-                                            _context.productos.Update(producto);
+                                            _context.Empleados.Update(Empleado);
                                             _context.SaveChanges();
                                             break;
                                         case "No":
@@ -197,15 +202,15 @@ namespace Proyecto_Matrix.Funciones
                                 Console.ReadKey();
                                 Console.Clear();
                                 break;
-                            case "Cambiar Precio del Producto":
+                            case "Cambiar Nombre del Empleado":
                                 bool finalizado3 = false;
                                 while (finalizado3 != true)
                                 {
-                                    producto.precio = AnsiConsole.Ask<int>("Ingrese el nuevo nombre del producto");
-                                    AnsiConsole.MarkupLine("precio del producto actualizado correctamente a " + producto.precio + "\n");
+                                    Empleado.NombreE = AnsiConsole.Ask<string>("Ingrese el nuevo nombre del empleado");
+                                    AnsiConsole.MarkupLine("Nombre actualizado correctamente a " + Empleado.NombreE + "\n");
                                     var seleccion = AnsiConsole.Prompt(
                                         new SelectionPrompt<String>()
-                                        .Title("Desea mantener el precio que selecciono?")
+                                        .Title("Desea mantener el nombre?")
                                         .PageSize(10)
                                         .AddChoices(new[]
                                         {
@@ -215,7 +220,7 @@ namespace Proyecto_Matrix.Funciones
                                     {
                                         case "Si":
                                             finalizado3 = true;
-                                            _context.productos.Update(producto);
+                                            _context.Empleados.Update(Empleado);
                                             _context.SaveChanges();
                                             break;
                                         case "No":
@@ -228,12 +233,12 @@ namespace Proyecto_Matrix.Funciones
                                 Console.ReadKey();
                                 Console.Clear();
                                 break;
-                            case "Cambiar Cantidad Disponible del producto":
+                            case "Cambiar Apellido del Empleado":
                                 bool finalizado4 = false;
                                 while (finalizado4 != true)
                                 {
-                                    producto.nombre = AnsiConsole.Ask<string>("Ingrese la nueva cantidad disponible");
-                                    AnsiConsole.MarkupLine("Nombre del producto actualizado correctamente a " + producto.cantidad_inventario + "\n");
+                                    Empleado.Apellido = AnsiConsole.Ask<string>("Ingrese el nuevo Apellido");
+                                    AnsiConsole.MarkupLine("Apellido actualizado correctamente a " + Empleado.Apellido + "\n");
                                     var seleccion = AnsiConsole.Prompt(
                                         new SelectionPrompt<String>()
                                         .Title("Es correcta la nueva cantidad?")
@@ -246,7 +251,7 @@ namespace Proyecto_Matrix.Funciones
                                     {
                                         case "Si":
                                             finalizado4 = true;
-                                            _context.productos.Update(producto);
+                                            _context.Empleados.Update(Empleado);
                                             _context.SaveChanges();
                                             break;
                                         case "No":
@@ -259,16 +264,17 @@ namespace Proyecto_Matrix.Funciones
                                 Console.ReadKey();
                                 Console.Clear();
                                 break;
-                            case "Cambiar toda la informacion del producto":
+                            case "Cambiar toda la informacion del Empleado":
                                 bool finalizado5 = false;
                                 while (finalizado5 != true)
                                 {
-                                    producto.nombre = AnsiConsole.Ask<string>("Ingrese el nuevo nombre del producto");
-                                    producto.descripcion = AnsiConsole.Ask<string>("Ingrese la nueva descripcion");
-                                    producto.precio = AnsiConsole.Ask<int>("Ingrese el nuevo precio");
-                                    producto.cantidad_inventario = AnsiConsole.Ask<int>("Ingrese la nueva cantidad disponible");
-                                    AnsiConsole.MarkupLine("producto actualizado correctamente a:\nNombre: " + producto.nombre +"\n Descripcion: "+producto.descripcion+
-                                        "\nPrecio: "+producto.precio+"\nCantidad: "+producto.cantidad_inventario+ "\n");
+                                    Empleado.UserE = AnsiConsole.Ask<string>("Ingrese el nuevo Usuario");
+                                    Empleado.PasswordE = AnsiConsole.Ask<string>("Ingrese la nueva contraseña");
+                                    Empleado.NombreE = AnsiConsole.Ask<string>("Ingrese el nuevo nombre");
+                                    Empleado.Apellido = AnsiConsole.Ask<string>("Ingrese el nuevo apellido");
+                                    Empleado.Puesto = AnsiConsole.Ask<string>("Ingrese el nuevo puesto");
+                                    AnsiConsole.MarkupLine("Datos del empleado actualizado correctamente a:\nUsuario: " + Empleado.UserE + "\n Contraseña: " + Empleado.PasswordE +
+                                        "\nNombre: " + Empleado.NombreE + "\nApellido: " + Empleado.Apellido + "\n Puesto: "+Empleado.Puesto+"");
                                     var seleccion = AnsiConsole.Prompt(
                                         new SelectionPrompt<String>()
                                         .Title("Desea mantener los cambios?")
@@ -281,7 +287,7 @@ namespace Proyecto_Matrix.Funciones
                                     {
                                         case "Si":
                                             finalizado5 = true;
-                                            _context.productos.Update(producto);
+                                            _context.Empleados.Update(Empleado);
                                             _context.SaveChanges();
                                             break;
                                         case "No":
@@ -294,11 +300,38 @@ namespace Proyecto_Matrix.Funciones
                                 Console.ReadKey();
                                 Console.Clear();
                                 break;
-                            case "Eliminar el producto":
-                                _context.productos.Remove(producto);
+                            case "Cambiar puesto del Empleado":
+                                bool finalizado6 = false;
+                                while (finalizado6 != true)
+                                {
+                                    Empleado.Puesto = AnsiConsole.Ask<string>("Ingrese el nuevo puesto del Empleado");
+                                    AnsiConsole.MarkupLine("Puesto actualizado correctamente a " + Empleado.Puesto + "\n");
+                                    var seleccion = AnsiConsole.Prompt(
+                                        new SelectionPrompt<String>()
+                                        .Title("Desea mantener el nuevo puesto?")
+                                        .PageSize(10)
+                                        .AddChoices(new[]
+                                        {
+                                            "Si","No"
+                                        }));
+                                    switch (seleccion)
+                                    {
+                                        case "Si":
+                                            finalizado6 = true;
+                                            _context.Empleados.Update(Empleado);
+                                            _context.SaveChanges();
+                                            break;
+                                        case "No":
+                                            Console.Clear();
+                                            menu.ImprimirLogo();
+                                            break;
+                                    }
+                                }
+                                break;
+                            case "Eliminar Empleado":
+                                _context.Empleados.Remove(Empleado);
                                 _context.SaveChanges();
-                               _context.productos.Update(producto);
-                                AnsiConsole.MarkupLine("Producto eliminado correctamente");
+                                AnsiConsole.MarkupLine("Empleado eliminado correctamente");
                                 AnsiConsole.MarkupLine("Presione una tecla para continuar");
                                 Console.ReadKey();
                                 Console.Clear();
@@ -307,7 +340,7 @@ namespace Proyecto_Matrix.Funciones
                     }
                     else
                     {
-                        AnsiConsole.MarkupLine("No se encontro ningun producto con ID "+IDCambio);
+                        AnsiConsole.MarkupLine("No se encontro ningun Empleado con ID " + IDCambio);
                         AnsiConsole.MarkupLine("Presione una tecla para continuar");
                         Console.ReadKey();
                         Console.Clear();
@@ -315,7 +348,7 @@ namespace Proyecto_Matrix.Funciones
                 }
                 else
                 {
-                    AnsiConsole.MarkupLine("No hay productos en el inventario");
+                    AnsiConsole.MarkupLine("No hay Empleados en el sistema");
                     AnsiConsole.MarkupLine("Presione una tecla para continuar");
                     Console.ReadKey();
                     Console.Clear();

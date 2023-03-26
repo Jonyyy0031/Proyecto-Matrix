@@ -12,7 +12,7 @@ namespace Proyecto_Matrix.Funciones
     {
         public void Loading()
         {
-            Menu menu = new Menu();
+            Menus menu = new Menus();
             AnsiConsole.Status()
         .SpinnerStyle(Style.Parse("red"))
         .Start("Espere por favor...", ctx =>

@@ -14,11 +14,12 @@ namespace Proyecto_Matrix.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //optionsBuilder.UseSqlServer(@"Server=DESKTOP-SD33E52;Database=ProyectoDB-Matrix;Trusted_Connection=True;");
-            optionsBuilder.UseSqlServer(@"server=jony;database=proyectodb-matrix;trusted_connection=true;");
+            optionsBuilder.UseSqlServer(@"Server=JONY;Database=ProyectoDB-Matrix;Trusted_Connection=True;");
 
         }
         public DbSet<Producto> productos { get; set; }
         public DbSet<Administrador> Administradores { get; set; }
+        public DbSet<Empleado> Empleados { get; set; }
         //add-migration nombre
         //update-database
     }
