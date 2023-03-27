@@ -47,6 +47,7 @@ namespace Proyecto_Matrix.Funciones
                                     menu.ImprimirLogo();
                                     Console.WriteLine("Bienvenido " + UsuarioA);
                                     menu.imprimirmenuAdministrador();
+                                    Environment.Exit(0);
                                 }
                                 else
                                 {
@@ -74,7 +75,6 @@ namespace Proyecto_Matrix.Funciones
                             int intentos = 0;
                             while (intentos <6)
                             {
-                                menu.ImprimirLogo();
                                 string Usuario = AnsiConsole.Ask<string>("Ingresa tu Usuario");
                                 string ContraseñaEmpleado = AnsiConsole.Ask<string>("Ingresa tu contraseña");
                                 if (empleado.UserE == Usuario && empleado.PasswordE == ContraseñaEmpleado)
@@ -83,6 +83,7 @@ namespace Proyecto_Matrix.Funciones
                                     menu.ImprimirLogo();
                                     Console.WriteLine("Bienvenido " + Usuario);
                                     menu.imprimirmenuEmpleado();
+                                    Environment.Exit(0);
                                 }
                                 else
                                 {
