@@ -30,7 +30,6 @@ namespace Proyecto_Matrix.Funciones
                     empleado.NombreE = AnsiConsole.Ask<string>("Ingresa el nombre del Empleado");
                     empleado.Apellido = AnsiConsole.Ask<string>("Ingresa el apellido del Empleado");
                     empleado.Puesto = AnsiConsole.Ask<string>("Ingresa el puesto laboral del Empleado");
-                    Console.WriteLine("Ingresa el apellido");
                     _context.Empleados.Add(empleado);
                     _context.SaveChanges();
                     Console.Clear();
@@ -135,7 +134,7 @@ namespace Proyecto_Matrix.Funciones
                             .PageSize(10)
                             .AddChoices(new[]
                             {
-                            "Cambiar Usuario del Empleado","Cambiar Contraseña del Empleado","Cambiar Nombre del Empleado","Cambiar Apellido del Empleado","Cambiar Puesto del Empleado",
+                            "Cambiar Usuario del Empleado","Cambiar Contraseña del Empleado","Cambiar Nombre del Empleado","Cambiar Apellido del Empleado","Cambiar puesto del Empleado",
                             "Cambiar toda la informacion del Empleado","Eliminar Empleado"
                             }));
                         switch (Cambio)
