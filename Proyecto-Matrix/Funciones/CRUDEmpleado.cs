@@ -326,6 +326,9 @@ namespace Proyecto_Matrix.Funciones
                                             break;
                                     }
                                 }
+                                AnsiConsole.MarkupLine("Presione una tecla para continuar");
+                                Console.ReadKey();
+                                Console.Clear();
                                 break;
                             case "Eliminar Empleado":
                                 _context.Empleados.Remove(Empleado);
