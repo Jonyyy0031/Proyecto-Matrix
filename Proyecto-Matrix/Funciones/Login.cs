@@ -32,15 +32,17 @@ namespace Proyecto_Matrix.Funciones
                     case "Ingresar como Administrador":
                         Console.Clear();
                         menu.ImprimirLogoBienvenida();
-                        int IDAdministrador = AnsiConsole.Ask<int>("Ingresa tu ID de Administrador");
+                        int IDAdministrador = 1;
                         Administrador administrador = _context.Administradores.Find(IDAdministrador);
                         if (administrador != null)
                         {
                             int intentos1 = 0;
                             while (intentos1 < 6)
                             {
-                                string UsuarioA = AnsiConsole.Ask<string>("Ingresa tu Usuario");
-                                string ContraseñaAdmin = AnsiConsole.Ask<string>("Ingresa tu Contraseña");
+                                Console.Clear();
+                                menu.ImprimirLogoBienvenida();
+                                string UsuarioA = AnsiConsole.Ask<string>("Ingresa tu Usuario: ");
+                                string ContraseñaAdmin = AnsiConsole.Ask<string>("Ingresa tu Contraseña: ");
                                 if (administrador.User == UsuarioA && administrador.Password == ContraseñaAdmin)
                                 {
                                     Console.Clear();
@@ -68,15 +70,17 @@ namespace Proyecto_Matrix.Funciones
 
                         Console.Clear();
                         menu.ImprimirLogoBienvenida();
-                        int IDEmpleado = AnsiConsole.Ask<int>("Ingresa tu ID de Empleado");
+                        int IDEmpleado = AnsiConsole.Ask<int>("Ingresa tu ID de Empleado proporcionado por el Administrador: ");
                         Empleado empleado = _context.Empleados.Find(IDEmpleado);
                         if (empleado != null)
                         {
                             int intentos = 0;
                             while (intentos <6)
                             {
-                                string Usuario = AnsiConsole.Ask<string>("Ingresa tu Usuario");
-                                string ContraseñaEmpleado = AnsiConsole.Ask<string>("Ingresa tu contraseña");
+                                Console.Clear();
+                                menu.ImprimirLogoBienvenida();
+                                string Usuario = AnsiConsole.Ask<string>("Ingresa tu Usuario: ");
+                                string ContraseñaEmpleado = AnsiConsole.Ask<string>("Ingresa tu contraseña: ");
                                 if (empleado.UserE == Usuario && empleado.PasswordE == ContraseñaEmpleado)
                                 {
                                     Console.Clear();

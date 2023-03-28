@@ -24,12 +24,11 @@ namespace Proyecto_Matrix.Funciones
                 {
                     Menus menu = new Menus();
                     Empleado empleado = new Empleado();
-                    Console.WriteLine("Ingresa la informacion:");
-                    empleado.UserE = AnsiConsole.Ask<string>("Ingresa el nombre de Usuario del Empleado");
-                    empleado.PasswordE = AnsiConsole.Ask<string>("Ingresa la contraseña del Empleado");
-                    empleado.NombreE = AnsiConsole.Ask<string>("Ingresa el nombre del Empleado");
-                    empleado.Apellido = AnsiConsole.Ask<string>("Ingresa el apellido del Empleado");
-                    empleado.Puesto = AnsiConsole.Ask<string>("Ingresa el puesto laboral del Empleado");
+                    empleado.UserE = AnsiConsole.Ask<string>("Ingresa el nombre de Usuario del Empleado: ");
+                    empleado.PasswordE = AnsiConsole.Ask<string>("Ingresa la contraseña del Empleado: ");
+                    empleado.NombreE = AnsiConsole.Ask<string>("Ingresa el nombre del Empleado: ");
+                    empleado.Apellido = AnsiConsole.Ask<string>("Ingresa el apellido del Empleado: ");
+                    empleado.Puesto = AnsiConsole.Ask<string>("Ingresa el puesto laboral del Empleado: ");
                     _context.Empleados.Add(empleado);
                     _context.SaveChanges();
                     Console.Clear();
@@ -122,7 +121,7 @@ namespace Proyecto_Matrix.Funciones
                 Menus menu = new Menus();
                 if (_context.Empleados.Any())
                 {
-                    int IDCambio = AnsiConsole.Ask<int>("Ingrese la ID del Empleado a modificar");
+                    int IDCambio = AnsiConsole.Ask<int>("Ingrese la ID del Empleado a modificar: ");
                     Console.Clear();
                     menu.ImprimirLogo();
                     Empleado Empleado = _context.Empleados.Find(IDCambio);
@@ -143,7 +142,7 @@ namespace Proyecto_Matrix.Funciones
                                 bool finalizado = false;
                                 while (finalizado != true)
                                 {
-                                    Empleado.UserE = AnsiConsole.Ask<string>("Ingrese el Usuario del Empleado");
+                                    Empleado.UserE = AnsiConsole.Ask<string>("Ingrese el Usuario del Empleado: ");
                                     AnsiConsole.MarkupLine("Usuario actualizado correctamente a " + Empleado.UserE + "\n");
                                     var seleccion = AnsiConsole.Prompt(
                                         new SelectionPrompt<String>()
@@ -174,7 +173,7 @@ namespace Proyecto_Matrix.Funciones
                                 bool finalizado1 = false;
                                 while (finalizado1 != true)
                                 {
-                                    Empleado.PasswordE = AnsiConsole.Ask<string>("Ingrese la nueva contraseña del Empleado");
+                                    Empleado.PasswordE = AnsiConsole.Ask<string>("Ingrese la nueva contraseña del Empleado: ");
                                     AnsiConsole.MarkupLine("Contraseña actualizada correctamente a " + Empleado.PasswordE + "\n");
                                     var seleccion = AnsiConsole.Prompt(
                                         new SelectionPrompt<String>()
@@ -205,7 +204,7 @@ namespace Proyecto_Matrix.Funciones
                                 bool finalizado3 = false;
                                 while (finalizado3 != true)
                                 {
-                                    Empleado.NombreE = AnsiConsole.Ask<string>("Ingrese el nuevo nombre del empleado");
+                                    Empleado.NombreE = AnsiConsole.Ask<string>("Ingrese el nuevo nombre del empleado: ");
                                     AnsiConsole.MarkupLine("Nombre actualizado correctamente a " + Empleado.NombreE + "\n");
                                     var seleccion = AnsiConsole.Prompt(
                                         new SelectionPrompt<String>()
@@ -236,7 +235,7 @@ namespace Proyecto_Matrix.Funciones
                                 bool finalizado4 = false;
                                 while (finalizado4 != true)
                                 {
-                                    Empleado.Apellido = AnsiConsole.Ask<string>("Ingrese el nuevo Apellido");
+                                    Empleado.Apellido = AnsiConsole.Ask<string>("Ingrese el nuevo Apellido: ");
                                     AnsiConsole.MarkupLine("Apellido actualizado correctamente a " + Empleado.Apellido + "\n");
                                     var seleccion = AnsiConsole.Prompt(
                                         new SelectionPrompt<String>()
@@ -267,11 +266,11 @@ namespace Proyecto_Matrix.Funciones
                                 bool finalizado5 = false;
                                 while (finalizado5 != true)
                                 {
-                                    Empleado.UserE = AnsiConsole.Ask<string>("Ingrese el nuevo Usuario");
-                                    Empleado.PasswordE = AnsiConsole.Ask<string>("Ingrese la nueva contraseña");
-                                    Empleado.NombreE = AnsiConsole.Ask<string>("Ingrese el nuevo nombre");
-                                    Empleado.Apellido = AnsiConsole.Ask<string>("Ingrese el nuevo apellido");
-                                    Empleado.Puesto = AnsiConsole.Ask<string>("Ingrese el nuevo puesto");
+                                    Empleado.UserE = AnsiConsole.Ask<string>("Ingrese el nuevo Usuario: ");
+                                    Empleado.PasswordE = AnsiConsole.Ask<string>("Ingrese la nueva contraseña: ");
+                                    Empleado.NombreE = AnsiConsole.Ask<string>("Ingrese el nuevo nombre: ");
+                                    Empleado.Apellido = AnsiConsole.Ask<string>("Ingrese el nuevo apellido: ");
+                                    Empleado.Puesto = AnsiConsole.Ask<string>("Ingrese el nuevo puesto: ");
                                     AnsiConsole.MarkupLine("Datos del empleado actualizado correctamente a:\nUsuario: " + Empleado.UserE + "\n Contraseña: " + Empleado.PasswordE +
                                         "\nNombre: " + Empleado.NombreE + "\nApellido: " + Empleado.Apellido + "\n Puesto: "+Empleado.Puesto+"");
                                     var seleccion = AnsiConsole.Prompt(
@@ -303,7 +302,7 @@ namespace Proyecto_Matrix.Funciones
                                 bool finalizado6 = false;
                                 while (finalizado6 != true)
                                 {
-                                    Empleado.Puesto = AnsiConsole.Ask<string>("Ingrese el nuevo puesto del Empleado");
+                                    Empleado.Puesto = AnsiConsole.Ask<string>("Ingrese el nuevo puesto del Empleado: ");
                                     AnsiConsole.MarkupLine("Puesto actualizado correctamente a " + Empleado.Puesto + "\n");
                                     var seleccion = AnsiConsole.Prompt(
                                         new SelectionPrompt<String>()
