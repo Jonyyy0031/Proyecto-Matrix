@@ -76,7 +76,7 @@ namespace Proyecto_Matrix.Funciones
                     case "Usuarios":
                         estatus.Loading();
                         Console.Clear ();
-                        imprimirmenufuncionusuario();
+                        imprimirmenufuncionempleado();
                         break;
                     case "Salir":
                         Console.Clear();
@@ -131,7 +131,7 @@ namespace Proyecto_Matrix.Funciones
                 }
             }
         }
-        public void imprimirmenufuncionusuario()
+        public void imprimirmenufuncionempleado()
         {
             bool salir = false;
             while (salir != true)
